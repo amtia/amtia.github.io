@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>独立世界</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">Home</a></li>
+            <li><a href="/#/tags">Tags</a></li>
+            <li><a href="/#/archive">Archive</a></li>
+            <li><a href="http://editor.yangjinkun.cn" target="_blank">Editor</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+使用Markdown有一点不太方便，就是放图片。
+
+传统的方法就是，把图片上传到新浪微博、Flickr或者其他地方，通过各种繁杂的方法获取到图片链接，回到编辑器，写上`![]()`然后把图片地址粘贴进去。
+
+但是，现在我们有了全新的塔右图床，这一切都不再是问题。
+
+塔右图床： <http://tu.conn.cc> 
+
+![](http://tu-cdn.qiniudn.com/sj.png/w.jpg)
+
+支持每次最多上传20张小于10M的图片，图片外链[七牛](https://portal.qiniu.com/signup?code=3l8yx67ddch1r)加速，高速稳定可靠。
+
+![](http://tu-cdn.qiniudn.com/tj.png/w.jpg)
+
+支持一键获取Markdown格式的外链地址。当然也支持HTML和BBCode格式。支持去除水印。
+
+---
+
+当然，为了保证能一直为大家免费下去，加上了好几处广告。你可以屏蔽它们，或者看到感兴趣的就点一下，这样我们就能够获取一些广告费来支付主机及云储存的费用。
+
+---
+
+塔右图床：<http://tu.conn.cc> 
+
+© [YJK ](http://yangjinkun.cn)
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p>使用Markdown有一点不太方便，就是放图片。</p>
+
+<p>传统的方法就是，把图片上传到新浪微博、Flickr或者其他地方，通过各种繁杂的方法获取到图片链接，回到编辑器，写上<code>![]()</code>然后把图片地址粘贴进去。</p>
+
+<p>但是，现在我们有了全新的塔右图床，这一切都不再是问题。</p>
+
+<p>塔右图床： <a href="http://tu.conn.cc">http://tu.conn.cc</a> </p>
+
+<p><img src="http://tu-cdn.qiniudn.com/sj.png/w.jpg" alt="" title=""></p>
+
+<p>支持每次最多上传20张小于10M的图片，图片外链<a href="https://portal.qiniu.com/signup?code=3l8yx67ddch1r">七牛</a>加速，高速稳定可靠。</p>
+
+<p><img src="http://tu-cdn.qiniudn.com/tj.png/w.jpg" alt="" title=""></p>
+
+<p>支持一键获取Markdown格式的外链地址。当然也支持HTML和BBCode格式。支持去除水印。</p>
+
+<hr>
+
+<p>当然，为了保证能一直为大家免费下去，加上了好几处广告。你可以屏蔽它们，或者看到感兴趣的就点一下，这样我们就能够获取一些广告费来支付主机及云储存的费用。</p>
+
+<hr>
+
+<p>塔右图床：<a href="http://tu.conn.cc">http://tu.conn.cc</a> </p>
+
+<p>© <a href="http://yangjinkun.cn">YJK </a></p>
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by YJK, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "tu.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = YJK;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
